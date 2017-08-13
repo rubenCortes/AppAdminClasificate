@@ -5,13 +5,11 @@
  */
 package com.bennu.servicio;
 
-import com.bennu.entidad.EstadoRegion;
 import com.bennu.entidad.Poblacion;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author administrador
  */
 @Stateless
-@Path("poblacion")
+@Path("com.bennu.entidad.poblacion")
 public class PoblacionFacadeREST extends AbstractFacade<Poblacion> {
 
     @PersistenceContext(unitName = "AppAdminClasificatePU")
@@ -45,8 +43,9 @@ public class PoblacionFacadeREST extends AbstractFacade<Poblacion> {
     }
 
     @PUT
+    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(Poblacion entity) {
+    public void edit(@PathParam("id") Integer id, Poblacion entity) {
         super.edit(entity);
     }
 
@@ -84,20 +83,6 @@ public class PoblacionFacadeREST extends AbstractFacade<Poblacion> {
         return String.valueOf(super.count());
     }
 
-    
-    @GET
-    @Path("estado/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Poblacion> findEstadoPais3(@PathParam("id") Integer id){
-        
-        TypedQuery<Poblacion> consultaPoblacionPorEstado = em.createNamedQuery("Poblacion.findByEstado", Poblacion.class);
-        consultaPoblacionPorEstado.setParameter("idEstadoRegion", id);
-        List<Poblacion> lista= consultaPoblacionPorEstado.getResultList();
-        
-        return lista;
-    }
-   
-    
     @Override
     protected EntityManager getEntityManager() {
         return em;

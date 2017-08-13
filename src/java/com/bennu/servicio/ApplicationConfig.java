@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.bennu.servicio.PaisFacadeREST.class);
         resources.add(com.bennu.servicio.PoblacionFacadeREST.class);
         resources.add(com.bennu.servicio.SubCategoriaFacadeREST.class);
+        resources.add(com.bennu.servicio.UsuarioFacadeREST.class);
     }
     
 }

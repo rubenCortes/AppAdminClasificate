@@ -48,7 +48,7 @@ public class Categoria implements Serializable {
     private String nombre;
     @OneToMany(mappedBy = "categoria")
     private List<SubCategoria> subCategoriaList;
-
+    
     public Categoria() {
     }
 
@@ -108,7 +108,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.bennu.entidad.Categoria[ idCategoria=" + idCategoria + " ]";
+        return "Categoria[ idCategoria=" + idCategoria + " ]";
     }
     
 }

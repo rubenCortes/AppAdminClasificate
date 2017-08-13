@@ -6,6 +6,7 @@
 package com.bennu.entidad;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +17,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Poblacion.findByNombre", query = "SELECT p FROM Poblacion p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Poblacion.findByEstado", query = "SELECT p FROM Poblacion p WHERE p.estadoRegion.idEstadoRegion = :idEstadoRegion")})
 public class Poblacion implements Serializable {
+
+    @OneToMany(mappedBy = "poblacion")
+    private List<Usuario> usuarioList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -109,6 +115,15 @@ public class Poblacion implements Serializable {
     @Override
     public String toString() {
         return "com.bennu.entidad.Poblacion[ idPoblacion=" + idPoblacion + " ]";
+    }
+
+    @XmlTransient
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
     
 }

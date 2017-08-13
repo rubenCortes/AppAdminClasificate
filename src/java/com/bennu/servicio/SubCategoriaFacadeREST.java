@@ -84,8 +84,8 @@ public class SubCategoriaFacadeREST extends AbstractFacade<SubCategoria> {
         return String.valueOf(super.count());
     }
     
-        @GET
-    @Path("pais/{id}")
+    @GET
+    @Path("categoria/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<SubCategoria> findSubCategoriaCategoria(@PathParam("id") Integer id){
         

@@ -5,13 +5,8 @@
  */
 package com.bennu.servicio;
 
-import com.bennu.entidad.Categoria;
-import com.bennu.entidad.SubCategoria;
-import com.bennu.entidad.auxiliar.CategoriaSimple;
-import com.bennu.entidad.auxiliar.SubCategoriaSimple;
-import java.util.ArrayList;
+import com.bennu.entidad.Usuario;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,29 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author administrador
  */
 @Stateless
-@Path("categoria")
-public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
+@Path("usuario")
+public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "AppAdminClasificatePU")
     private EntityManager em;
 
-    @EJB
-    SubCategoriaFacadeREST subCategoriaREST;
-    
-    public CategoriaFacadeREST() {
-        super(Categoria.class);
+    public UsuarioFacadeREST() {
+        super(Usuario.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Categoria entity) {
+    public void create(Usuario entity) {
         super.create(entity);
     }
 
     @PUT
+    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(Categoria entity) {
+    public void edit(@PathParam("id") Integer id, Usuario entity) {
         super.edit(entity);
     }
 
@@ -65,49 +58,31 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Categoria find(@PathParam("id") Integer id) {
+    public Usuario find(@PathParam("id") Integer id) {
+        return super.find(id);
+    }
+    // @Path("{brand}/{model}/{year}")
+    @GET
+    @Path("validacion/{correo}/{clave}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Usuario findValidacion(@PathParam("correo") Integer id, @PathParam("clave") String clave) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Categoria> findAll() {
+    public List<Usuario> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Categoria> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Usuario> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
-    
-    @GET
-    @Path("simple")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<CategoriaSimple> getCategoriaSub() {
-        
-        List<Categoria> categoriaLista = super.findAll();
-        List<CategoriaSimple> categoriaSimpleLista = new ArrayList<>();
-        
-        categoriaLista.forEach(categoria -> {
-            
-            List<SubCategoria> subCategoriaLista = subCategoriaREST.findSubCategoriaCategoria(categoria.getIdCategoria());
-            List<SubCategoriaSimple> subCategoriaSimpleLista = new ArrayList<>();    
-            
-            subCategoriaLista.forEach(subCategoria -> subCategoriaSimpleLista.add( new SubCategoriaSimple(subCategoria) ) );
-            
-            categoriaSimpleLista.add( new CategoriaSimple(categoria, subCategoriaSimpleLista) );
-            
-        });
-        
-        
-        return categoriaSimpleLista;
-    }
-
-    
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)

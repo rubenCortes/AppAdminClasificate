@@ -6,13 +6,10 @@
 package com.bennu.servicio;
 
 import com.bennu.entidad.EstadoRegion;
-import com.bennu.entidad.Pais;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,11 +25,8 @@ import javax.ws.rs.core.MediaType;
  * @author administrador
  */
 @Stateless
-@Path("estadoregion")
+@Path("com.bennu.entidad.estadoregion")
 public class EstadoRegionFacadeREST extends AbstractFacade<EstadoRegion> {
-
-    @EJB
-    private PaisFacadeREST paisREST;
 
     @PersistenceContext(unitName = "AppAdminClasificatePU")
     private EntityManager em;
@@ -45,13 +39,13 @@ public class EstadoRegionFacadeREST extends AbstractFacade<EstadoRegion> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(EstadoRegion entity) {
-        //System.out.println(entity);
         super.create(entity);
     }
 
     @PUT
+    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(EstadoRegion entity) {
+    public void edit(@PathParam("id") Integer id, EstadoRegion entity) {
         super.edit(entity);
     }
 
@@ -89,28 +83,6 @@ public class EstadoRegionFacadeREST extends AbstractFacade<EstadoRegion> {
         return String.valueOf(super.count());
     }
 
-    @GET
-    @Path("pais/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<EstadoRegion> findEstadoPais(@PathParam("id") Integer id){
-        
-        /*
-        Pais pais = this.paisREST.find(id);
-        
-        List<EstadoRegion> lista = pais.getEstadoRegionList();
-        
-        System.out.println("Número de estados: " + lista.size());
-        */
-        
-        
-        TypedQuery<EstadoRegion> consultaEstadosPorPais= em.createNamedQuery("EstadoRegion.findByPais", EstadoRegion.class);
-        consultaEstadosPorPais.setParameter("idPais", id);
-        List<EstadoRegion> lista= consultaEstadosPorPais.getResultList();
-        
-        
-        return lista;
-    }
-    
     @Override
     protected EntityManager getEntityManager() {
         return em;

@@ -43,8 +43,9 @@ public class PaisFacadeREST extends AbstractFacade<Pais> {
     }
 
     @PUT
+    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(Pais entity) {
+    public void edit(@PathParam("id") Integer id, Pais entity) {
         super.edit(entity);
     }
 
